@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Property Listings">
+        <lightning-input type="number" name="minPrice" label="Min Price" onchange={handleFilterChange}></lightning-input>
+        <lightning-input type="number" name="maxPrice" label="Max Price" onchange={handleFilterChange}></lightning-input>
+        <lightning-combobox name="status" label="Status" options={statusOptions} onchange={handleFilterChange}></lightning-combobox>
+        <lightning-combobox name="furnishing" label="Furnishing Status" options={furnishingOptions} onchange={handleFilterChange}></lightning-combobox>
+        <lightning-input type="number" name="distanceKm" label="Nearby Distance (km)" onchange={handleFilterChange}></lightning-input>
+
+        <template for:each={properties} for:item="prop">
+            <div key={prop.Id} class="property-card">
+                <p><strong>{prop.Property_Name__c}</strong></p>
+                <p>{prop.Address__c}, {prop.City__c}, {prop.State__c}</p>
+                <p>Status: {prop.Status__c}</p>
+                <p>Rent: ${prop.Rent__c}</p>
+            </div>
+        </template>
+
+        <lightning-button label="Previous" onclick={handlePrevPage} disabled={isPrevDisabled}></lightning-button>
+        <lightning-button label="Next" onclick={handleNextPage}></lightning-button>
+    </lightning-card>
+</template>

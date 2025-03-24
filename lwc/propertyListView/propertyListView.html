@@ -1,0 +1,71 @@
+<template>
+<lightning-card title="List View Data Table">
+     <!-- Modal for New Record -->
+     <div class="slds-col slds-text-align_left">
+     <lightning-button label="New" variant="brand" onclick={openModal}></lightning-button>
+     </div>
+     <template if:true={isModalOpen}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h1><b>Create New Property</b></h1>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input name="Name" required="true" label="Property Name" onchange={handleInputChange}></lightning-input>
+                    <lightning-input name="Type__c" required="true" label="Property Type" onchange={handleInputChange}></lightning-input>
+                    <lightning-combobox name="Status__c" required="true" label="Status Filter" options={statusOptions} onchange={handleInputChange}> </lightning-combobox>
+                <lightning-combobox name="Furnishing_Status__c" required="true" label="Furnished Status" options={FurnishedOptions} onchange={handleInputChange}> </lightning-combobox>
+                <lightning-input name="Rent__c" label="Rent Amount" required="true" onchange={handleInputChange}></lightning-input>
+                <lightning-input name="Description__c" required="true" label="Description" onchange={handleInputChange}></lightning-input>                   
+                    <lightning-file-upload
+               required="true" label="Upload File"
+                    onuploadfinished={handleFileChange}
+                    multiple >
+                </lightning-file-upload>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-m-top_medium slds-text-align_center slds-button_group">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={createNewRecord}></lightning-button>
+                </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+    <div class="slds-m-around_medium">
+        <div class="slds-col">
+            <lightning-input type="number" label="Minimum Rent Amount" 
+                placeholder="Enter amount" onchange={handleRentFilter}>
+            </lightning-input>
+        </div>
+        <div class="slds-col">
+            <lightning-combobox label="Status Filter" options={statusOptions} 
+                onchange={handleStatusFilter}>
+            </lightning-combobox>
+            <lightning-combobox label="Furnished Status" options={FurnishedOptions} 
+                onchange={handleFurnishedStatusFilter}>
+            </lightning-combobox>
+        </div>
+    </div>
+        <template if:true={data.length}>
+            <lightning-datatable
+                key-field="Id"
+                data={data}
+                columns={columns}
+                hide-checkbox-column="true">
+            </lightning-datatable>
+        </template>
+        <template if:false={data.length}>
+            <p>No records found.</p>
+        </template>
+
+        <!-- Pagination Controls -->
+        <div class="slds-m-top_medium slds-text-align_center">
+            <lightning-button label="Previous" onclick={previousPage} disabled={disablePrevious} class="slds-m-right_small"></lightning-button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <lightning-button label="Next" onclick={nextPage} disabled={disableNext} class="slds-m-left_small"></lightning-button>
+        </div>
+    
+    </lightning-card>
+   
+</template>
